@@ -1,4 +1,9 @@
 /*jshint esversion: 8 */
+const express = require("express");
+const router = express.Router();
+const connectToDatabase = require("../models/db");
+
+// Get all gifts
 router.get("/", async (req, res) => {
   try {
     // Task 1: Connect to MongoDB and store connection to db constant
@@ -18,6 +23,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Get a specific gift by ID
 router.get("/:id", async (req, res) => {
   try {
     // Task 1: Connect to MongoDB and store connection to db constant

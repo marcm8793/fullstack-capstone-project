@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: giftapp
+  labels:
+    app: giftapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: giftapp
+  template:
+    metadata:
+      labels:
+        app: giftapp
+    spec:
+      containers:
+        - name: giftapp-container
+          image: us.icr.io/sn-labs-marcm9387/giftapp:latest
+          ports:
+            - containerPort: 3060
+          env:
+            - name: MONGO_URL
+              value: "mongodb://mongodb-service:27017"
+            - name: JWT_SECRET
+              value: "mysecret"
+      imagePullSecrets:
+        - name: icr
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gift-app-service
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 3060
+      protocol: TCP
+  selector:
+    app: giftapp
